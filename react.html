@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+    <div class="js-cart-container"></div>
+    <div class="js-cost-container"></div>
+    <div class="js-date-container"></div>
+    <div class="js-clock-container"></div>
+
+    <script src="https:unpkg.com/supersimpledev/dayjs.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      const button = <button>Hello</button>;
+      const text = <p>This is my first react code.</p>;
+      const combine = button + text; //gives [object Object] [object Object]
+      const useDiv = (
+        <div>
+          <button>Hello</button>
+          <p>This is my first react code.</p>
+          <p>This is React {10 + 9}</p>
+        </div>
+      );
+      const container = document.querySelector('.js-container');
+      ReactDOM.createRoot(container).render(useDiv);
+
+      const cart = (
+        <div>
+          <p>Cotton Shirt</p>
+          <p>Price: $10</p>
+          <button>Add to Cart</button>
+        </div>
+      );
+
+      const cartContainer = document.querySelector('.js-cart-container');
+      ReactDOM.createRoot(cartContainer).render(cart);
+
+      const productCost = 10 + 8 * 2;
+      const shippingCost = 5;
+
+      const orderDiv = (
+        <div>
+          <p>Product cost: ${productCost}</p>
+          <p>shipping cost: ${shippingCost}</p>
+          <p>Total cost: ${productCost + shippingCost}</p>
+          <button>Place your order</button>
+        </div>
+      );
+
+      const costContainer = document.querySelector('.js-cost-container');
+      ReactDOM.createRoot(costContainer).render(orderDiv);
+
+      ReactDOM.createRoot(document.querySelector('.js-date-container')).render(
+        <p>Today is {dayjs().format('dddd, MMMM DD')}</p>
+      );
+
+      const root = ReactDOM.createRoot(
+        document.querySelector('.js-clock-container')
+      );
+
+      setInterval(() => {
+        root.render(<p>Current time: {dayjs().format('HH:mm:ss')}</p>);
+      }, 1000);
+    </script>
+  </body>
+</html>
