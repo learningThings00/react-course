@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+    <div class="js-cart-container"></div>
+    <div class="js-cost-container"></div>
+    <div class="js-date-container"></div>
+    <div class="js-clock-container"></div>
+
+    <script src="https:unpkg.com/supersimpledev/dayjs.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      function LoginForm() {
+        return (
+          <div>
+            <div>
+              <input placeholder='Email' />
+            </div>
+            <div>
+              <input type='password' placeholder='Password' />
+            </div>
+            <button>Login</button>
+            <button>Sign up</button>
+          </div>
+        );
+      }
+
+      function ProductDetails({ name, price, discountPrice, imageSrc }) {
+        return (
+          <div>
+            <img src={imageSrc} width='100' />
+            <p>{name}</p>
+            {!discountPrice && <p>Price: {price}</p>}
+
+            {discountPrice && (
+              <del>
+                <p>Price: {price}</p>
+              </del>
+            )}
+            {discountPrice && <p>Discount price: {discountPrice}</p>}
+            <button>Add to Cart</button>
+          </div>
+        );
+      }
+
+      function ClickCounter({ count, setCount }) {
+        function countClick() {
+          setCount(count + 1);
+        }
+
+        return (
+          <>
+            <button onClick={countClick}>
+              Click {count} {count === 1 && 'time'} {count !== 1 && 'times'}
+            </button>
+          </>
+        );
+      }
+
+      function InputApp() {
+        const [inputText, setInputText] = React.useState('');
+
+        function type(event) {
+          setInputText(event.target.value);
+        }
+
+        function reset() {
+          setInputText('');
+        }
+
+        function example() {
+          setInputText('Ben Tennison');
+        }
+
+        return (
+          <>
+            <input
+              placeholder='Type a name here'
+              size='25'
+              value={inputText}
+              onChange={type}
+            />
+            <button onClick={reset}>Reset</button>
+            <button onClick={example}>Example</button>
+            <p>Hello {inputText}</p>
+          </>
+        );
+      }
+
+      function App() {
+        const [count, setCount] = React.useState(0);
+
+        function reset() {
+          setCount(0);
+        }
+        return (
+          <>
+            <InputApp />
+
+            <ClickCounter count={count} setCount={setCount} />
+            <ClickCounter count={count} setCount={setCount} />
+            <button onClick={reset}>Reset</button>
+
+            <p>Hello, welcome to my website</p>
+            <LoginForm />
+
+            <ProductDetails
+              name='Cotton socks'
+              price='$10.90'
+              discountPrice='$4.99'
+              imageSrc='images/cotton-socks.png'
+            />
+            <ProductDetails
+              name='Tennis balls'
+              price='$6.00'
+              imageSrc='images/tennis-balls.png'
+            />
+            <ProductDetails
+              name='Plain T-Shirt'
+              price='$7.99'
+              imageSrc='images/plain-t-shirt.png'
+            />
+          </>
+        );
+      }
+      const container = document.querySelector('.js-container');
+      ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>
