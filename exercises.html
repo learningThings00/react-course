@@ -4,6 +4,60 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>React</title>
+
+    <style>
+      .switch-on {
+        background-color: rgb(25, 135, 84);
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        margin-right: 20px;
+      }
+
+      .switch-off {
+        background-color: rgb(220, 53, 69);
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        margin-right: 20px;
+      }
+
+      .login-form {
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        border: 1px solid black;
+        border-radius: 10px;
+        margin: 30px auto;
+        padding: 20px;
+      }
+
+      .login-form p {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 20px;
+      }
+
+      .login-form input {
+        padding: 8px 12px;
+        border-radius: 5px;
+        border-width: 1px;
+        margin-right: 5px;
+      }
+
+      .login-button {
+        background-color: rgb(0, 123, 255);
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        margin-right: 10px;
+        margin-top: 10px;
+      }
+    </style>
   </head>
   <body>
     <div class="js-container"></div>
@@ -12,23 +66,36 @@
     <div class="js-date-container"></div>
     <div class="js-clock-container"></div>
 
-    <script src="https:unpkg.com/supersimpledev/dayjs.js"></script>
+    <script src="https://unpkg.com/supersimpledev/dayjs.js"></script>
 
     <script src="https://unpkg.com/supersimpledev/react.js"></script>
     <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
     <script src="https://unpkg.com/supersimpledev/babel.js"></script>
     <script type="text/babel">
       function LoginForm() {
+        const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
+
+        function showPassword() {
+          if (isPasswordVisible) {
+            setIsPasswordVisible(false);
+          } else {
+            setIsPasswordVisible(true);
+          }
+        }
         return (
-          <div>
+          <div className="login-form">
+            <p>Hello, welcome to my website</p>
             <div>
               <input placeholder='Email' />
             </div>
             <div>
-              <input type='password' placeholder='Password' />
+              <input type={isPasswordVisible ? 'text' : 'password'} placeholder='Password' />
+              <button onClick={showPassword}>{isPasswordVisible ? 'Hide' : 'Show'}</button>
             </div>
-            <button>Login</button>
-            <button>Sign up</button>
+            <div>
+              <button className="login-button">Login</button>
+              <button className="login-button">Sign up</button>
+            </div>
           </div>
         );
       }
@@ -51,17 +118,48 @@
         );
       }
 
-      function ClickCounter({ count, setCount }) {
+      function ClickCounter() {
+        const [count, setCount] = React.useState(0);
+        const countRef = React.useRef(null);
+        const intervalIdRef = React.useRef(null);
+        const [isAutoCounting, setIsAutoCounting] = React.useState(false);
+        React.useEffect(() => {
+          return () =>  clearInterval(intervalIdRef.current);
+        }, []);
+
         function countClick() {
-          setCount(count + 1);
+          setCount(c => c + 1);
+        }
+
+
+        function reset() {
+          setCount(0);
+          if (isAutoCounting) {
+            clearInterval(intervalIdRef.current);
+            intervalIdRef.current = null;
+            setIsAutoCounting(false);
+          }
+        }
+
+        function autoCount() {
+          if (!isAutoCounting) {
+            intervalIdRef.current = setInterval(() => countRef.current.click(), 1000);
+            setIsAutoCounting(true);
+          } else {
+            clearInterval(intervalIdRef.current);
+            intervalIdRef.current = null;
+            setIsAutoCounting(false);
+          }
         }
 
         return (
-          <>
-            <button onClick={countClick}>
-              Click {count} {count === 1 && 'time'} {count !== 1 && 'times'}
+          <div>
+            <button onClick={countClick} ref={countRef}>
+              Click {count} {count === 1 ? 'time' : 'times'}
             </button>
-          </>
+            <button onClick={reset}>Reset</button>
+            <button onClick={autoCount}>{isAutoCounting ? 'Stop' : 'Auto Click'}</button>
+          </div>
         );
       }
 
@@ -95,21 +193,49 @@
         );
       }
 
-      function App() {
-        const [count, setCount] = React.useState(0);
+      function ButtonApp() {
+        const [toggleSwitch, setToggleSwitch] = React.useState('ON');
 
-        function reset() {
-          setCount(0);
+        function toggle() {
+          if (toggleSwitch === 'ON') {
+            setToggleSwitch('OFF');
+          } else {
+            setToggleSwitch('ON');
+          }
         }
+
         return (
           <>
+            <button onClick={toggle} className={toggleSwitch === 'ON' ? 'switch-on' : 'switch-off'}>{toggleSwitch}</button>
+          </>
+        )
+      }
+
+      function CurrentTime() {
+        const [currentTime, setCurrentTime] = React.useState(dayjs().format('HH:mm:ss'));
+
+        const currentTimeRef = React.useEffect(() => {
+          setInterval(() => setCurrentTime(dayjs().format('HH:mm:ss')), 1000);
+        }, [CurrentTime]);
+
+        return (
+            <div ref={currentTimeRef}>
+              Current time: {currentTime}
+            </div>
+        )
+      }
+
+      function App() {
+       
+        return (
+          <>
+            <ButtonApp />
             <InputApp />
+            <CurrentTime />
 
-            <ClickCounter count={count} setCount={setCount} />
-            <ClickCounter count={count} setCount={setCount} />
-            <button onClick={reset}>Reset</button>
+            <ClickCounter />
+            
 
-            <p>Hello, welcome to my website</p>
             <LoginForm />
 
             <ProductDetails
