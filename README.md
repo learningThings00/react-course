@@ -7,3 +7,5 @@ Day 2 - Learned about Components and props and started Chatbot project.
 Day 3 - Learned generating HTML in React, Event, Eventhandler, State, array destructuring etc.
 
 Day 4 - Learned CSS in React and styled Chatbot Project, Worked on hooks, created auto-scroll feature in Chatbot.
+
+Day 5 - Learned proper React setup using vite, added new responeses in chatbot, completed Chatbot project, etc.

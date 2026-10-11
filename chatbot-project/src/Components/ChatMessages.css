@@ -1,0 +1,13 @@
+.chat-message-container {
+  flex-grow: 1;
+  overflow: scroll;
+  scrollbar-width: none;
+  margin: 10px;
+}
+
+.empty-conversation {
+  text-align: center;
+  font-size: 18px;
+  color: gray;
+  margin: 0;
+}
